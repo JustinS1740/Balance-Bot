@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
-CHANNEL_ID = 1354079288231465061
+CHANNEL_ID = 1341637989452873799
 URL = "https://www.marvelrivals.com/balancepost/"
 
 intents = discord.Intents.default()
