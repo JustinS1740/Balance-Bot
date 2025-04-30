@@ -16,30 +16,37 @@ client = discord.Client(intents=intents)
 
 last_seen_post = None
 
-async def fetch_latest_post():
-    async with aiohttp.ClientSession() as session:
-        async with session.get(URL) as resp:
-            if resp.status != 200:
-                print(f"Failed to fetch page, status: {resp.status}")
-                return None
-            
-            html = await resp.text()
-            '''soup = BeautifulSoup(html, "html.parser")
+TEST_MODE = False
+TEST_POST_FILE = "test.txt"
 
-            post = soup.find('a', class_="list_item")
-            if post:
-                title = post.get_text(strip=True)
-                link = post["href"]
-                return(title, link)
-            return None'''
-            match = re.search(r'Marvel Rivals Version (\d{8}) Balance Post.*?href="([^"]+)"', html, re.DOTALL)
-            if match:
-                date_str, link = match.groups()
-                title = f"Marvel Rivals Version {date_str} Balance Post"
-                if not link.startswith('http'):
-                    link = f"https://www.marvelrivals.com{link}"
-                return (title, link)
-            return None
+async def fetch_latest_post():
+    if TEST_MODE: # test for updated post
+        try:
+            with open(TEST_POST_FILE, "r") as f:
+                link = f.read().strip()
+                if link:
+                    date_str = link.split("/")[4]
+                    title = f"Marvel Rivals Balance Post {date_str}"
+                    return (title, link)
+        except Exception as e:
+            print(f"Error reading test post file: {e}")
+        return None
+    else:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(URL) as resp:
+                if resp.status != 200:
+                    print(f"Failed to fetch page, status: {resp.status}")
+                    return None
+                
+                html = await resp.text()
+                
+                match = re.search(r'href="(https://www\.marvelrivals\.com/balancepost/\d{8}/\d+_\d+\.html)"', html)
+                if match:
+                    link = match.group(1)
+                    date_str = link.split("/")[4]
+                    title = f"Marvel Rivals Balance Post {date_str}"
+                    return (title, link)
+        return None
         
 async def check_for_updates():
     global last_seen_post
