@@ -36,7 +36,7 @@ Through this project, I gained hands-on experience with:
 
 ---
 
-## 🚀 How to Runs
+## 🚀 How to Run
 
 ```bash
 # Clone the project
