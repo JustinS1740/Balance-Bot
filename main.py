@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = 1341637989452873799
-URL = "https://www.marvelrivals.com/balancepost/"
+URL = "https://www.marvelrivals.com/news/"
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -59,7 +59,7 @@ async def check_for_updates():
             last_seen_post = latest
             title, link = latest
             await channel.send(f"**🚨New Balance Post🚨**\n**{title}**\n🔗 {link}")
-        await asyncio.sleep(300) # Checks every 5 minutes
+        await asyncio.sleep(3600) # Checks every hour
 
 @client.event
 async def on_ready():
