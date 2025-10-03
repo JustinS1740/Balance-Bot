@@ -59,7 +59,7 @@ async def check_for_updates():
             last_seen_post = latest
             title, link = latest
             await channel.send(f"**🚨New Balance Post🚨**\n**{title}**\n🔗 {link}")
-        await asyncio.sleep(3600) # Checks every hour
+        await asyncio.sleep(21600) # Checks every 6 hours
 
 @client.event
 async def on_ready():
